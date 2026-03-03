@@ -4,7 +4,7 @@ So I am trying to understand MPU configuration and security of embedded IoT devi
 
 I am trying to follow [Arm's developer tutorial](https://developer.arm.com/documentation/ka005771/latest/) on MPU programming but with open source resources
 
-Part 1:  (ARM CortexM M3 CPU on lm3s6965evb machine(board))
+**Part 1**:  (ARM CortexM M3 CPU on lm3s6965evb machine(board))
 - create a very simple firmware
 - emulate it on qemu
 - debug with gdb
@@ -17,13 +17,11 @@ __issues faced__
     - I tried changing only the board with other ARM boards or tried to update the way vector table is configured or fault handling was done and none of them were correct
 - **Conclusion** The board(machine) is not well supported by qemu
 
-__Folder__
-[M3](/M3/)
+*Folder* [M3](/M3/)
 
-Part 2: (ARM CortexM M33 CPU on lm3s6965evb machine(board))
+**Part 2**: (ARM CortexM M33 CPU on lm3s6965evb machine(board))
 - Do the same as part 1 but with the M33 cpu
 - Identify the MPU_TYPE configuration
-- complete Exercise 1 - Find out how many MPU Regions are present in your Device [Arm's developer tutorial](https://developer.arm.com/documentation/ka005771/latest/)
 - Apparently the lm3s6965evb machine does work with M33 CPU so I only had to change the cpu flag on qemu for it to correctly boot
 - For identifying MPU registers I need to check the MPU register memory location from ARM since these registers are Memory Mapped registers
     - Hardware registers are placed inside the same address space as RAM — so you access hardware by reading/writing memory addresses.
@@ -38,5 +36,12 @@ Part 2: (ARM CortexM M33 CPU on lm3s6965evb machine(board))
     └────────────── examine command
 
     ```
-__Folder__
-[M33](/M33/)
+
+- complete Exercise 1 - Find out how many MPU Regions are present in your Device and confirm that the CMSIS Device Header has value too [Arm's developer tutorial](https://developer.arm.com/documentation/ka005771/latest/)
+
+- for more info on this exercise check comments in [main.c](/M33/main.c)
+
+![debug.png](/M33/docs/image.png)
+
+
+*Folder* [M33](/M33/)
