@@ -1,5 +1,5 @@
 CC      = arm-none-eabi-gcc
-CFLAGS  = -mcpu=cortex-m33 -mthumb -g -O0 -nostdlib -nostartfiles -mfloat-abi=soft
+CFLAGS  = -mcpu=cortex-m33 -mthumb -g -O0 -nostdlib -nostartfiles -mfloat-abi=soft -I./cmsis/include
 TARGET  = firmware.elf
 
 all: $(TARGET)
@@ -12,11 +12,7 @@ qemu: $(TARGET)
 	  -kernel $(TARGET) -S -s
 
 gdb:
-	gdb-multiarch -ex "target remote :1234" \
-	              -ex "file firmware.elf" \
-	              -ex "break main" \
-	              -ex "continue" \
-	              firmware.elf
+	gdb-multiarch firmware.elf
 
 clean:
 	rm -f $(TARGET)
