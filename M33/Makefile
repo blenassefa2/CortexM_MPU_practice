@@ -12,7 +12,7 @@ qemu: $(TARGET)
 	  -kernel $(TARGET) -S -s
 
 gdb:
-	gdb-multiarch firmware.elf
+	gdb-multiarch $(TARGET)
 
 clean:
 	rm -f $(TARGET)

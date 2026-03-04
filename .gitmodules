@@ -1,0 +1,3 @@
+[submodule "AN505/qemu"]
+	path = AN505/qemu
+	url = https://gitlab.com/qemu-project/qemu.git

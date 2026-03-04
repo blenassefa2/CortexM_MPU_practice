@@ -45,3 +45,82 @@ __issues faced__
 
 
 *Folder* [M33](/M33/)
+
+
+**Part 3**: (ARM CortexM M33 CPU on mps2-an505 machine(board))
+
+to check if teh mps2-an505 board is supported use the following command
+
+```bash
+qemu-system-arm -machine help | grep -v Cortex-M33
+```
+
+if mps2-an505 doesn't exist clone the qemu projet itself and set up updated version of qemu-system-arm
+
+```bash
+sudo apt update
+sudo apt install ninja-build build-essential libglib2.0-dev libpixman-1-dev
+
+git clone https://gitlab.com/qemu-project/qemu.git
+cd qemu
+./configure --target-list=arm-softmmu
+make -j$(nproc)
+```
+
+Then from now on you will not be using the ```qemu-system-arm``` command instead you will be using the qemu you configured in your ```\qemu\build``` folder
+
+
+```bash
+# check if the machine exists
+./build/qemu-system-arm -machine help | grep an505
+```
+
+Therefore make sure to have updated [Makefile](/AN505/Makefile)
+
+issues
+
+
+```
+// The sp and pc need to be properly set up since the mps2-an505 doesn't load as easily as other machines on qemu
+// what is its problem?
+    // Other machines directly set up the sp from the vector table 
+    // but our dear mps2-an505 keeps on trying to execute the vector table WITHOUT SETTING the sp, pc and WITHOUT LOADING the code
+    // so the solution that worked
+        //1. first remove -kernel option in make file and replace it with -device loader,file=$(TARGET),cpu-num=0
+        -device loader, file=$(TARGET) , cpu-num=0
+                                   │        │
+                                   |        └──   set the PC and SP of CPU core #0
+                                   └── loads the target file 
+        //2. load the sp and pc registers manually from the debugger as follows (I think cpu-num=0 part didn't work properly so good second measure)
+
+(gdb) set $sp = 0x28208000 
+(gdb) set $pc = 0x00200071
+(gdb) break main
+Note: breakpoints 1 and 2 also set at pc 0x200016.
+Breakpoint 3 at 0x200016: file main.c, line 4.
+(gdb) info registers
+r0             0x0                 0
+r1             0x0                 0
+r2             0x0                 0
+r3             0x0                 0
+r4             0x0                 0
+r5             0x0                 0
+r6             0x0                 0
+r7             0x0                 0
+r8             0x0                 0
+r9             0x0                 0
+r10            0x0                 0
+r11            0x0                 0
+r12            0x0                 0
+sp             0x28208000          0x28208000 <---- now properly setup
+lr             0xffffffff          -1
+pc             0x200070            0x200070 <Reset_Handler> <---- now properly setup
+xpsr           0x41000000          1090519040 
+fpscr          0x0                 0
+msp            0x28208000          673218560
+psp            0x0                 0
+msp_ns         0x0                 0
+psp_ns         0x0                 0
+--Type <RET> for more, q to quit, c to continue without paging--q
+Quit
+```
