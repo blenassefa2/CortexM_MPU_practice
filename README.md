@@ -5,6 +5,7 @@ So I am trying to understand MPU configuration and security of embedded IoT devi
 I am trying to follow [Arm's developer tutorial](https://developer.arm.com/documentation/ka005771/latest/) on MPU programming but with open source resources
 
 To use this repository clone it as follows
+
 ```bash
 git clone --recurse-submodules https://github.com/blenassefa2/CortexM_MPU_practice
 ```
