@@ -10,6 +10,7 @@ __Vectors:
                 .long    Reset_Handler       /* Reset Handler */
                 .long    0                   /* NMI */
                 .long    HardFault_Handler   /* HardFault */
+                .long    MemManage_Handler   /* MemManage */
 
                 .thumb
                 .section .text
@@ -18,8 +19,13 @@ __Vectors:
                 .thumb_func
                 .globl   Reset_Handler
 Reset_Handler:
+                ldr  r0, =__Vectors        /* vector table base = 0x00200000 */
+                ldr  r1, =0xE000ED08       /* SCB->VTOR */
+                str  r0, [r1]              /* VTOR = 0x00200000 */
+                ldr  r0, =__StackTop       /* now load stack top separately */
+                msr  msp, r0               /* MSP = 0x28208000 */
                 nop
-                b        main
+                b    main
 
                 .thumb_func
                 .weak    HardFault_Handler

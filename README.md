@@ -45,6 +45,8 @@ __issues faced__
 
 - complete Exercise 1 - Find out how many MPU Regions are present in your Device and confirm that the CMSIS Device Header has value too [Arm's developer tutorial](https://developer.arm.com/documentation/ka005771/latest/)
 
+**Answer** DREGION = 16 means the MPU hardware supports 16 configurable regions. It does not mean 8 secure + 8 non-secure, although TrustZone allows separate MPU configurations for secure and non-secure states.
+
 - for more info on this exercise check comments in [main.c](/M33/main.c)
 
 ![debug.png](/M33/docs/image.png)
