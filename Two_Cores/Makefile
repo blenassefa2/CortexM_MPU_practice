@@ -1,7 +1,7 @@
 
 
 
-SRCS = main.c system_ARMCM33.c 0boot.s
+SRCS = $(wildcard src/*.c) $(wildcard src/*.s)
 OBJS = $(SRCS:.c=.o)
 OBJS := $(OBJS:.s=.o)
 QEMU = ./qemu/build/qemu-system-arm
@@ -21,7 +21,8 @@ CFLAGS  = \
 -fno-asynchronous-unwind-tables \
 -nostartfiles \
 -mfloat-abi=soft \
--I./cmsis/include
+-I./cmsis/include \
+-I./include
 
 # CFLAGS = -ffreestanding
 LDFLAGS = -T link.ld
@@ -48,4 +49,4 @@ gdb:
 	$(GDB) $(TARGET) -ex "target remote:1234"
 
 clean:
-	rm -f *.o *.elf
+	rm -f src/*.o *.o *.elf
