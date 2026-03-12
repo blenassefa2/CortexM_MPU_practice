@@ -82,11 +82,11 @@ void mpu_setup( void ) {
 
     /* Configure region 2 - ZBTSRAM 2 & 3 (2x32-bit) */
     regions[2].base.wr = 1;
-    regions[2].base.base_address = 0x20000000 >> 5; 
+    regions[2].base.base_address = 0x28200000 >> 5; 
 
 
     regions[2].limit.region_enable = 1;
-    regions[2].limit.limit_address = 0x207FFFFF >> 5; 
+    regions[2].limit.limit_address = 0x28207FFF >> 5; 
 
     MPU->RBAR_A2 = convert_r(NULL, &regions[2].base);
     MPU->RLAR_A2 = convert_r(&regions[2].limit, NULL);

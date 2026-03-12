@@ -45,8 +45,29 @@ $(TARGET): $(OBJS)
 qemu: $(TARGET)
 	$(QEMU) -machine $(MACHINE) -nographic  -device loader,file=$(TARGET),cpu-num=0  -S -s
 
+#$(QEMU)  -M help | grep -i "lpc\|nxp\|dual" to get boards that support multiple core
+load_cpu0:
+	$(QEMU) -machine mps2-an521 -nographic \
+    -device loader,file=$(TARGET),cpu-num=0 \
+    -S -s
+	
+load_cpu1:
+	$(QEMU) -machine mps2-an521 -nographic \
+	-device loader,file=$(TARGET),cpu-num=1 \
+	-S -gdb tcp::1235
+
+load_both:
+	$(QEMU) -machine mps2-an521 -nographic \
+	-device loader,file=firmware.elf,cpu-num=0 \
+	-device loader,file=firmware.elf,cpu-num=1 \
+	-S -s
+
 gdb:
 	$(GDB) $(TARGET) -ex "target remote:1234"
+
+gdb1:
+	$(GDB) $(TARGET) -ex "target remote:1235"
+
 
 clean:
 	rm -f src/*.o *.o *.elf
