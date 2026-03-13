@@ -1,4 +1,4 @@
-__STACK_SIZE = 0x00008000;  /* 32K — can't exceed NS_RAM size */
+__STACK_SIZE_PER_CPU = 0x00004000;  /* 16K per CPU */
 
 MEMORY
 {
@@ -12,7 +12,7 @@ SECTIONS
 {
   .text :
   {
-    KEEP(*(.vectors))
+    KEEP(*(.vectors*))
     *(.text*)
   } > NS_FLASH
 
@@ -35,7 +35,13 @@ SECTIONS
     *(.bss*)
   } > NS_RAM
 
-  /* Stack at top of RAM — stack grows downward */
-  __StackTop   = ORIGIN(NS_RAM) + LENGTH(NS_RAM);
-  __StackLimit = __StackTop - __STACK_SIZE;
+  /* Two separate stacks, one per CPU */
+  __StackTop_CPU0   = ORIGIN(NS_RAM) + LENGTH(NS_RAM);
+  __StackLimit_CPU0 = __StackTop_CPU0 - __STACK_SIZE_PER_CPU;
+  __StackTop_CPU1   = __StackLimit_CPU0;
+  __StackLimit_CPU1 = __StackTop_CPU1 - __STACK_SIZE_PER_CPU;
+
+  /* Keep the original names for CPU0 startup code */
+  __StackTop   = __StackTop_CPU0;
+  __StackLimit = __StackLimit_CPU0;
 }

@@ -49,6 +49,11 @@ qemu: $(TARGET)
 qemu_debug: $(TARGET)
 	$(QEMU) -machine $(MACHINE) -nographic -semihosting-config enable=on,target=native -device loader,file=$(TARGET),cpu-num=0  -S -s
 
+qemu2cpu: $(TARGET)
+	$(QEMU) -machine mps2-an521 -nographic \
+	-semihosting-config enable=on,target=native \
+	-device loader,file=$(TARGET),cpu-num=0
+
 #$(QEMU)  -M help | grep -i "lpc\|nxp\|dual" to get boards that support multiple core
 load_cpu0:
 	$(QEMU) -machine mps2-an521 -nographic \
