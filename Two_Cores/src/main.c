@@ -8,23 +8,44 @@ extern void user_main(void);
 extern uint8_t user_stack[1024];
 extern void setup_cpu1(void);;
 
+
+static void sh_puts(const char *str) {
+    register uint32_t r0 __asm("r0") = 0x04;
+    register const char *r1 __asm("r1") = str;
+    asm("bkpt 0xAB" :: "r" (r0), "r" (r1) : "memory");
+}
+
+static void sh_putx(uint32_t value){
+    char buf[9];   
+    for (int i = 0; i < 8; i++) {
+        uint32_t nibble = (value >> (28 - 4 * i)) & 0xF;
+        buf[i] = (nibble < 10) ? ('0' + nibble) : ('A' + nibble - 10);
+    }
+    buf[8] = '\0';
+    sh_puts(buf);
+}
+
 #define USER_STACK_TOP ((uint32_t)(user_stack))
 
 int main( void )
 {
+
+    sh_puts("- mpu setup()\n");
     /* Exercise 1 - 3 */
     mpu_setup();
 
-    setup_cpu1();
+    sh_puts("- cpu #1 setup()\n");
+    // setup_cpu1();
 
     /* Exercise 4 - Test the MPU */
 
+    sh_puts("- test MPU \n");
     // test - 1 
     int x = 0;
-    uint32_t *ptr = (uint32_t *) 0x00000001;
+    uint32_t *ptr = (uint32_t *) 0x00000000; // 1 => UsageFault (before  MPU fault) 
     
     x = *ptr;   /* Read test  */
-   // *ptr = 0xA;  /* Write test: ptr is in region 0 which has read only  access */
+    *ptr = 0xA;  /* Write test: ptr is in region 0 which has read only  access */
     
     // test - 2
     // switch_to_unprivileged(USER_STACK_TOP, user_main);
@@ -54,13 +75,21 @@ int main( void )
 void HardFault_Handler(void) {
     volatile uint32_t hfsr  = *(volatile uint32_t*)0xE000ED2C; // HardFault Status
     volatile uint32_t mmfar = *(volatile uint32_t*)0xE000ED34; // MemManage Fault Address
+    sh_puts("HardFault at: ");
+    sh_putx(mmfar);
+    sh_puts(" status: ");
+    sh_putx(hfsr);
+    sh_puts("\n");
     while(1);   
 }
 
 void MemManage_Handler(void) {
     volatile uint32_t mmfsr = *(volatile uint32_t*)0xE000ED28 & 0xFF; // bottom byte = MMFSR
     volatile uint32_t mmfar = *(volatile uint32_t*)0xE000ED34;         // faulting address
-
-
+    sh_puts("MemManageFault at: ");
+    sh_putx(mmfar);
+    sh_puts(" status: ");
+    sh_putx(mmfsr);
+    sh_puts("\n");
     while(1);   
 }

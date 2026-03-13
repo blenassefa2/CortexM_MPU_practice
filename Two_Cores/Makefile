@@ -4,7 +4,8 @@
 SRCS = $(wildcard src/*.c) $(wildcard src/*.s)
 OBJS = $(SRCS:.c=.o)
 OBJS := $(OBJS:.s=.o)
-QEMU = ./qemu/build/qemu-system-arm
+#QEMU = ./qemu/build/qemu-system-arm
+QEMU = qemu-system-arm
 
 # toolchain
 CC      = arm-none-eabi-gcc
@@ -43,7 +44,10 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $@
 
 qemu: $(TARGET)
-	$(QEMU) -machine $(MACHINE) -nographic  -device loader,file=$(TARGET),cpu-num=0  -S -s
+	$(QEMU) -machine $(MACHINE) -nographic -semihosting-config enable=on,target=native -device loader,file=$(TARGET),cpu-num=0 
+
+qemu_debug: $(TARGET)
+	$(QEMU) -machine $(MACHINE) -nographic -semihosting-config enable=on,target=native -device loader,file=$(TARGET),cpu-num=0  -S -s
 
 #$(QEMU)  -M help | grep -i "lpc\|nxp\|dual" to get boards that support multiple core
 load_cpu0:
