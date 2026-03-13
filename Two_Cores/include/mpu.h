@@ -3,7 +3,7 @@
 
 #define CONFIGURED_SIZE 3
 
-
+#include <stdint.h>
 struct address_info_t {
     unsigned mpu_region : 8;
     unsigned readwrite_ok : 1;
