@@ -1,6 +1,6 @@
 
 #include <stdint.h>
-#include "mpu.h"
+#include "../include/mpu.h"
 
 extern void switch_to_unprivileged(uint32_t top, void (*user_func)(void));
 extern void user_main(void);

@@ -1,8 +1,8 @@
 //#include "RTE_Components.h"                 /* This mechanism is the standard way to include */
-#include "ARMCM33_DSP_FP.h"              /* the device header file, in this case ARMCM33.h */
+#include "../cmsis/include/ARMCM33_DSP_FP.h"              /* the device header file, in this case ARMCM33.h */
 #include <stdio.h>
 #include <stdint.h>
-#include "mpu.h"
+#include "../include/mpu.h"
 
 struct region regions[CONFIGURED_SIZE];
 uint32_t convert_r(struct rlar_s *rl, struct rbar_s *rb)
