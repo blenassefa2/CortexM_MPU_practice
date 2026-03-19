@@ -67,9 +67,6 @@ void mpu_setup( void ) {
 
     /* Configure region 1 - ZBTSRAM 1 */
     // struct region zbtsram1;
-
-    // since it is a local struct I might get garbage values so I'll set each attribute
-   
     regions[1].base.wr = 1;
     regions[1].base.base_address = 0x4000 >> 5;
 
@@ -80,7 +77,10 @@ void mpu_setup( void ) {
     MPU->RBAR_A1 = convert_r(NULL, &regions[1].base);
     MPU->RLAR_A1 = convert_r(&regions[1].limit, NULL);
 
-    /* Configure region 2 - ZBTSRAM 2 & 3 (2x32-bit) */
+    /**
+     *  Configure region 2 - ZBTSRAM 2 & 3 (2x32-bit) 
+     *  I am using this address [0x28200000 - 0x28207FFF] because this is where None-secure RAM is found at
+     */
     regions[2].base.wr = 1;
     regions[2].base.base_address = 0x28200000 >> 5; 
 
