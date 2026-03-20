@@ -1,9 +1,11 @@
 
-#include <stdint.h>
+
 #include "../include/mpu.h"
+#include "../include/print.h"
 
 extern void switch_to_unprivileged(uint32_t top, void (*user_func)(void));
 extern void user_main(void);
+
 extern uint32_t __Vectors;
 
 extern uint8_t user_stack[1024];
@@ -13,21 +15,7 @@ extern uint8_t user_stack[1024];
 #define CPUWAIT_OFF       0x118UL
 #define CPU_IDENTITY_BASE 0x5001F000UL
 
-static void sh_puts(const char *str) {
-    register uint32_t r0 __asm("r0") = 0x04;
-    register const char *r1 __asm("r1") = str;
-    asm("bkpt 0xAB" :: "r" (r0), "r" (r1) : "memory");
-}
 
-static void sh_putx(uint32_t value){
-    char buf[9];   
-    for (int i = 0; i < 8; i++) {
-        uint32_t nibble = (value >> (28 - 4 * i)) & 0xF;
-        buf[i] = (nibble < 10) ? ('0' + nibble) : ('A' + nibble - 10);
-    }
-    buf[8] = '\0';
-    sh_puts(buf);
-}
 
 static uint32_t get_cpu_id(void)
 {
@@ -45,12 +33,6 @@ static void setup_cpu1(void)
 
 #define USER_STACK_TOP ((uint32_t)(user_stack))
 
-void main_cpu1(void)
-{
-    sh_puts("- cpu #1 main()\n");
-
-    while (1);
-}
 
 void main_cpu0(void)
 {
@@ -73,7 +55,7 @@ void main_cpu0(void)
     uint32_t *ptr = (uint32_t *) 0x00000000; // 1 => UsageFault (before  MPU fault) 
     
     x = *ptr;   /* Read test  */
-    *ptr = 0xA;  /* Write test: ptr is in region 0 which has read only  access */
+    // *ptr = 0xA;  /* Write test: ptr is in region 0 which has read only  access */
     
     // test - 2
     // switch_to_unprivileged(USER_STACK_TOP, user_main);

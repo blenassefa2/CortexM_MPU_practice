@@ -3,9 +3,11 @@
     .thumb
 
     .global switch_to_unprivileged
+    .type switch_to_unprivileged, %function
     .extern user_main
 
 // switch_to_unprivileged(USER_STACK_TOP, user_main)
+    .thumb_func
 switch_to_unprivileged:
     // r0 = address of user stack top (caller must pass)
     // r1 = address of user_main (caller must pass)
@@ -24,7 +26,8 @@ switch_to_unprivileged:
     .thumb
 
     .global startup_cpu1
-switch_cpu: // doesn't work
+    .type startup_cpu1, %function
+    .thumb_func
     
     .equ SYSCTL_BASE,   0x50021000
     .equ CPUWAIT_OFF,   0x118       // bit1 = CPU1, bit0 = CPU0

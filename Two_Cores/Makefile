@@ -10,7 +10,7 @@ QEMU = qemu-system-arm
 # toolchain
 CC      = arm-none-eabi-gcc
 GDB     = gdb-multiarch
-MACHINE = mps2-an505
+MACHINE = mps2-an521 
 
 # flags
 CFLAGS  = \
