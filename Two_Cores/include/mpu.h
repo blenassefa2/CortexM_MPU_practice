@@ -4,6 +4,7 @@
 #define CONFIGURED_SIZE 3
 
 #include <stdint.h>
+
 struct address_info_t {
     unsigned mpu_region : 8;
     unsigned readwrite_ok : 1;
@@ -52,7 +53,7 @@ struct device_attribute {
 
 struct rbar_s{
     uint32_t executable     :   1;  // bit 0      : (0) execution in this region allowed (1) not allowed
-    uint32_t wr         :   2;  // bit 1 - 2  : (00) Read/write by privileged code only, (01) r/w by any level, (10)ro by privileged code only, (11) ro by any level
+    uint32_t wr             :   2;  // bit 1 - 2  : (00) Read/write by privileged code only, (01) r/w by any level, (10)ro by privileged code only, (11) ro by any level
     uint32_t sharability    :   2;  // bit 3 - 4  : (00) Non-sharable, (01) Outershareable, (10) innershareable
     uint32_t base_address   :   27; // bit 5 - 31 : Starting address of the MPU region
 };

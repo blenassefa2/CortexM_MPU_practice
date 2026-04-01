@@ -1,4 +1,5 @@
 #include "../../include/shared.h"
+#include <stdatomic.h>
 
 uint32_t shared_counter = 0;
 

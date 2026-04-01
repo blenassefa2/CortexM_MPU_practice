@@ -20,14 +20,14 @@ switch_to_unprivileged:
 
     bx r1
 
+    // all of this below doesn't work (Trial for multicore)
+    @ .syntax unified
+    @ .cpu cortex-m33
+    @ .thumb
 
-    .syntax unified
-    .cpu cortex-m33
-    .thumb
-
-    .global startup_cpu1
-    .type startup_cpu1, %function
-    .thumb_func
+    @ .global startup_cpu1
+    @ .type startup_cpu1, %function
+    @ .thumb_func
     
-    .equ SYSCTL_BASE,   0x50021000
-    .equ CPUWAIT_OFF,   0x118       // bit1 = CPU1, bit0 = CPU0
+    @ .equ SYSCTL_BASE,   0x50021000
+    @ .equ CPUWAIT_OFF,   0x118       // bit1 = CPU1, bit0 = CPU0

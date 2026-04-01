@@ -80,8 +80,9 @@ void mpu_setup( void ) {
     /**
      *  Configure region 2 - ZBTSRAM 2 & 3 (2x32-bit) 
      *  I am using this address [0x28200000 - 0x28207FFF] because this is where None-secure RAM is found at
+     *  (0)r/w by priviledged only
      */
-    regions[2].base.wr = 1;
+    regions[2].base.wr = 0;
     regions[2].base.base_address = 0x28200000 >> 5; 
 
 
