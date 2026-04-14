@@ -59,9 +59,9 @@ void main_cpu1(void)
     for (int i = 0; i < ITERATIONS; i++)
     {
         uint32_t s = SYSTICK_VAL;
-        __DMB();
-        shared_counter++;
-        __DSB();
+     
+        int a = shared_counter;
+    
         uint32_t e = SYSTICK_VAL;
         uint32_t elapsed = systick_elapsed(s, e);
 

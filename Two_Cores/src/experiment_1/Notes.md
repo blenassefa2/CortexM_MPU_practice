@@ -49,3 +49,20 @@ cpu1 total ticks : 0122CFBA
 final shared_counter value: 003CA6E9
 
 
+
+secret bit match
+min    : 00000000
+max    : 00013529
+total  : 011DC684
+avg    : 00000009
+contended: 000E1DFE
+cpu1 total ticks : 011DC684
+
+
+secret bit no match
+min    : 00000000
+max    : 00014415
+total  : 0119CFC0
+avg    : 00000009
+contended: 000DF487
+cpu1 total ticks : 0119CFC0

@@ -11,7 +11,7 @@
 /* expected 4 000 000 =  0x3D0900 but kept getting 1EB4A0 when not using atomic */ 
 
 
-extern uint32_t shared_counter;
+extern atomic_uint_fast32_t shared_counter;
 
 extern volatile atomic_bool cpu1_running;
 extern volatile atomic_bool cpu0_running;

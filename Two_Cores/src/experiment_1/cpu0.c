@@ -27,15 +27,15 @@ void main_cpu0(void)
     cpu0_running = true;
     sh_puts("- cpu #0 running \n");
     while (!cpu1_running);
-
+    int secret_bit = 0;
+    if (secret_bit == 0)
+        for (int i = 0; i < ITERATIONS; i++)
+        {
+            
+            shared_counter++;
+        
+        }
     
-    for (int i = 0; i < ITERATIONS; i++)
-    {
-        __DMB();
-        shared_counter++;
-        __DSB();
-    }
-
     cpu0_running = false;
     while (cpu1_running);
 
